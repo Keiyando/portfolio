@@ -1,0 +1,83 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+.cache/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+
+# Package manager directories
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+.nyc_output
+
+# Lighthouse reports (keep structure, ignore content)
+tests/lighthouse/*.html
+tests/lighthouse/*.json
+!tests/lighthouse/.gitkeep
+
+# Performance monitoring
+*.perf
+
+# Local development
+.local/
+dev-server/
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
