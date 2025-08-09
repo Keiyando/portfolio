@@ -1,55 +1,857 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="プロフェッショナルなWebエンジニアのポートフォリオサイト">
-  <title>Portfolio - Web Developer</title>
-  
-  <!-- Preload critical resources -->
-  <link rel="preload" href="css/style.css" as="style">
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポートフォリオサイト | Web Developer</title>
+    <meta name="description" content="Webデベロッパーのポートフォリオサイト。HTML、CSS、JavaScriptを使用したプロジェクトを紹介しています。">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="ポートフォリオサイト | Web Developer">
+    <meta property="og:description" content="Webデベロッパーのポートフォリオサイト。HTML、CSS、JavaScriptを使用したプロジェクトを紹介しています。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ポートフォリオサイト | Web Developer">
+    <meta name="twitter:description" content="Webデベロッパーのポートフォリオサイト。HTML、CSS、JavaScriptを使用したプロジェクトを紹介しています。">
+    <meta name="twitter:image" content="">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Portfolio">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192.png">
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    
+    <!-- Preconnect to important origins -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="js/modules/lazyload.js" as="script">
+    <link rel="preload" href="js/modules/navigation.js" as="script">
+    
+    <!-- Prefetch next-page resources for smooth navigation -->
+    <link rel="prefetch" href="js/modules/projects.js">
+    <link rel="prefetch" href="js/modules/skills.js">
+    <link rel="prefetch" href="js/modules/form.js">
+    
+    <!-- Critical CSS (Inline for fastest rendering) -->
+    <style>
+    /* Critical CSS - Above the fold content */
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-secondary: #10b981;
+  --color-accent: #f59e0b;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-text-inverse: #ffffff;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f9fafb;
+  --color-bg-dark: #111827;
+  --color-border: #e5e7eb;
+  --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-heading: 'Inter', var(--font-family-base);
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-base: 1.6;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-all: all 0.3s ease;
+  --container-max-width: 1200px;
+  --radius-base: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+  --z-header: 1000;
+  --z-modal: 2000;
+}
+*,*::before,*::after{box-sizing:border-box}*{margin:0}body{line-height:var(--line-height-base);-webkit-font-smoothing:antialiased}img,picture,video,canvas,svg{display:block;max-width:100%}input,button,textarea,select{font:inherit}p,h1,h2,h3,h4,h5,h6{overflow-wrap:break-word}html{font-size:16px;scroll-behavior:smooth}body{font-family:var(--font-family-base);font-size:var(--font-size-base);color:var(--color-text-primary);background-color:var(--color-bg)}.container{width:100%;max-width:var(--container-max-width);margin:0 auto;padding:0 var(--space-md)}.skip-link{position:absolute;top:-40px;left:6px;background:var(--color-primary);color:var(--color-text-inverse);padding:var(--space-xs) var(--space-sm);text-decoration:none;border-radius:var(--radius-base);z-index:1001;font-weight:var(--font-weight-medium);transform:translateY(-100%);transition:transform var(--transition-base)}.skip-link:focus{transform:translateY(0)}.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--color-primary),var(--color-secondary));z-index:var(--z-header);transition:width 0.1s ease}.site-header{position:fixed;top:0;left:0;right:0;background-color:rgba(255,255,255,0);backdrop-filter:blur(8px);transition:var(--transition-all);z-index:var(--z-header);padding:var(--space-sm) 0}.site-header.scrolled{background-color:rgba(255,255,255,0.95);box-shadow:0 2px 20px rgba(0,0,0,0.1)}.site-header .container{display:flex;align-items:center;justify-content:space-between}.site-logo a{text-decoration:none;color:var(--color-text-primary);font-weight:var(--font-weight-bold);font-size:var(--font-size-xl);transition:var(--transition-base)}.site-logo a:hover{color:var(--color-primary)}.nav-menu{display:flex;list-style:none;margin:0;padding:0;gap:var(--space-lg)}.nav-menu a{text-decoration:none;color:var(--color-text-secondary);font-weight:var(--font-weight-medium);position:relative;transition:var(--transition-base)}.nav-menu a:hover,.nav-menu a.active{color:var(--color-primary)}.nav-menu a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background-color:var(--color-primary);transition:var(--transition-base)}.nav-menu a:hover::after,.nav-menu a.active::after{width:100%}.mobile-menu-toggle{display:none;background:none;border:none;padding:var(--space-xs);cursor:pointer;color:var(--color-text-primary)}#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--color-bg) 0%,var(--color-bg-alt) 100%);position:relative;overflow:hidden}.hero-content{text-align:center;z-index:2;max-width:800px}.hero-title{font-size:var(--font-size-6xl);font-weight:var(--font-weight-bold);color:var(--color-text-primary);margin-bottom:var(--space-md);font-family:var(--font-family-heading);line-height:var(--line-height-tight)}.hero-subtitle{font-size:var(--font-size-2xl);color:var(--color-text-secondary);margin-bottom:var(--space-xl);font-weight:var(--font-weight-medium)}.btn{display:inline-flex;align-items:center;justify-content:center;padding:var(--space-sm) var(--space-lg);border:none;border-radius:var(--radius-lg);text-decoration:none;font-weight:var(--font-weight-medium);font-size:var(--font-size-base);cursor:pointer;transition:var(--transition-all);min-width:120px}.btn-primary{background-color:var(--color-primary);color:var(--color-text-inverse)}.btn-primary:hover{background-color:var(--color-primary-dark);transform:translateY(-2px)}.hero-social{margin-top:var(--space-xl)}.social-links{display:flex;justify-content:center;gap:var(--space-md);list-style:none;padding:0;margin:0}.social-link{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:var(--radius-full);background-color:var(--color-bg-alt);color:var(--color-text-secondary);text-decoration:none;transition:var(--transition-all)}.social-link:hover{background-color:var(--color-primary);color:var(--color-text-inverse);transform:translateY(-2px)}@media (max-width:1023px){.nav-menu{display:none}.mobile-menu-toggle{display:block}.hero-title{font-size:var(--font-size-4xl)}.hero-subtitle{font-size:var(--font-size-lg)}.container{padding:0 var(--space-sm)}}@media (max-width:639px){.hero-title{font-size:var(--font-size-3xl)}.hero-subtitle{font-size:var(--font-size-base)}.social-links{gap:var(--space-sm)}.social-link{width:40px;height:40px}}
+    </style>
+    
+    <!-- Preload non-critical resources -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="css/responsive.css" as="style">
+    
+    <!-- Non-critical CSS (async loading) -->
+    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/responsive.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for users with JavaScript disabled -->
+    <noscript>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="css/animations.css">
+    </noscript>
 </head>
 <body>
-  <!-- Header/Navigation -->
-  <header role="banner">
-    <nav role="navigation" aria-label="メインナビゲーション">
-      <!-- ナビゲーション内容は後で実装 -->
-    </nav>
-  </header>
-  
-  <!-- Main Content -->
-  <main>
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-      <h1>Portfolio Site</h1>
-      <p>基本構造テンプレート</p>
-    </section>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main" class="skip-link" tabindex="1">メインコンテンツへスキップ</a>
     
-    <!-- Skills Section -->
-    <section class="skills" id="skills">
-      <!-- スキル内容は後で実装 -->
-    </section>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" role="progressbar" aria-label="ページスクロール進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
     
-    <!-- Projects Section -->
-    <section class="projects" id="projects">
-      <!-- プロジェクト内容は後で実装 -->
-    </section>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <!-- Logo/Name -->
+            <div class="site-logo">
+                <a href="#hero" aria-label="ホームに戻る">
+                    <span class="logo-text">Portfolio</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav aria-label="メインナビゲーション" class="main-nav" role="navigation">
+                <ul class="nav-list" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="#hero" class="nav-link" aria-current="page" role="menuitem">Home</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#skills" class="nav-link" role="menuitem">Skills</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#projects" class="nav-link" role="menuitem">Projects</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#contact" class="nav-link" role="menuitem">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Mobile Menu Toggle -->
+            <button 
+                type="button" 
+                class="mobile-menu-toggle"
+                aria-label="メニューを開く"
+                aria-expanded="false"
+                aria-controls="mobile-nav">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Mobile Navigation Overlay -->
+            <div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-hidden="true"></div>
+            
+            <!-- Mobile Navigation -->
+            <nav 
+                id="mobile-nav" 
+                role="navigation" 
+                aria-label="モバイルナビゲーション"
+                class="mobile-nav"
+                aria-hidden="true"
+                aria-modal="false">
+                <ul class="mobile-nav-list" role="menu">
+                    <li class="mobile-nav-item" role="none">
+                        <a href="#hero" class="mobile-nav-link" role="menuitem">Home</a>
+                    </li>
+                    <li class="mobile-nav-item" role="none">
+                        <a href="#skills" class="mobile-nav-link" role="menuitem">Skills</a>
+                    </li>
+                    <li class="mobile-nav-item" role="none">
+                        <a href="#projects" class="mobile-nav-link" role="menuitem">Projects</a>
+                    </li>
+                    <li class="mobile-nav-item" role="none">
+                        <a href="#contact" class="mobile-nav-link" role="menuitem">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
     
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-      <!-- コンタクト内容は後で実装 -->
-    </section>
-  </main>
-  
-  <!-- Footer -->
-  <footer role="contentinfo">
-    <!-- フッター内容は後で実装 -->
-  </footer>
-  
-  <!-- JavaScript -->
-  <script src="js/main.js"></script>
+    <!-- Main Content -->
+    <main id="main" role="main">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title scroll-animate fade-in-left" data-delay="100">
+                        <span class="hero-name">Your Name</span>
+                        <span class="hero-subtitle" role="doc-subtitle">Web Developer</span>
+                    </h1>
+                    
+                    <div class="hero-description scroll-animate" data-delay="300">
+                        <p class="typing-text" 
+                           aria-label="タイピングアニメーション: 創造的なWebソリューションを設計・開発しています"
+                           aria-live="polite"
+                           data-typing-text="創造的なWebソリューションを設計・開発しています">
+                        </p>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="social-links scroll-animate fade-in-right" data-delay="500" role="list" aria-label="ソーシャルメディアリンク">
+                        <a href="#" 
+                           class="social-link" 
+                           role="listitem"
+                           aria-label="GitHubプロフィールを開く (外部リンク)"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <span class="social-icon github-icon" aria-hidden="true"></span>
+                            <span class="sr-only">GitHub</span>
+                        </a>
+                        <a href="#" 
+                           class="social-link" 
+                           role="listitem"
+                           aria-label="LinkedInプロフィールを開く (外部リンク)"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <span class="social-icon linkedin-icon" aria-hidden="true"></span>
+                            <span class="sr-only">LinkedIn</span>
+                        </a>
+                        <a href="#" 
+                           class="social-link" 
+                           role="listitem"
+                           aria-label="Twitterプロフィールを開く (外部リンク)"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <span class="social-icon twitter-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Twitter</span>
+                        </a>
+                        <a href="mailto:your.email@example.com" 
+                           class="social-link" 
+                           role="listitem"
+                           aria-label="メールを送信">
+                            <span class="social-icon email-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Email</span>
+                        </a>
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <div class="hero-cta">
+                        <a href="#projects" 
+                           class="cta-button"
+                           aria-describedby="cta-description">
+                            View My Work
+                        </a>
+                        <span id="cta-description" class="sr-only">プロジェクトセクションへスムーズスクロールで移動します</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <div class="container">
+                <header class="section-header scroll-animate">
+                    <h2 class="section-title text-animate" data-text-animation="word-by-word" data-delay="100">PROJECTS</h2>
+                    <p class="section-subtitle scroll-animate" data-delay="200">実績</p>
+                </header>
+                
+                <!-- Project Filter -->
+                <div class="project-filter scroll-animate" data-delay="300" role="toolbar" aria-label="プロジェクトフィルター">
+                    <button class="filter-btn active" data-filter="all" aria-pressed="true" type="button">ALL</button>
+                    <button class="filter-btn" data-filter="frontend" aria-pressed="false" type="button">FRONTEND</button>
+                    <button class="filter-btn" data-filter="fullstack" aria-pressed="false" type="button">FULLSTACK</button>
+                </div>
+                
+                <!-- Projects Grid -->
+                <div id="projects-grid" class="projects-grid" role="region" aria-label="プロジェクト一覧" aria-live="polite">
+                    <!-- Projects will be populated by JavaScript with animation classes -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="container">
+                <header class="section-header scroll-animate">
+                    <h2 class="section-title text-animate" data-text-animation="word-by-word" data-delay="100">Skills</h2>
+                    <p class="section-description scroll-animate" data-delay="200">
+                        技術スキルと習熟度をご紹介します
+                    </p>
+                </header>
+                
+                <!-- Skills Categories -->
+                <div class="skills-container" role="region" aria-label="技術スキル一覧">
+                    <!-- Frontend Skills -->
+                    <div class="skills-category">
+                        <h3 class="category-title scroll-animate fade-in-left" data-delay="100">フロントエンド</h3>
+                        <div class="skills-grid" role="list">
+                            <div class="skill-card scroll-animate zoom-in" data-delay="200" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon html5-icon" viewBox="0 0 24 24" fill="currentColor" role="img" aria-labelledby="html5-icon-title">
+                                            <title id="html5-icon-title">HTML5ロゴ</title>
+                                            <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">HTML/CSS</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">セマンティックなWebサイト構築、アニメーションとトランジション、CSS Grid/Flexboxによる複雑なレイアウト設計</p>
+                            </div>
+                            
+                            <div class="skill-card scroll-animate zoom-in" data-delay="300" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon js-icon" viewBox="0 0 24 24" fill="currentColor" role="img" aria-labelledby="js-icon-title">
+                                            <title id="js-icon-title">JavaScriptロゴ</title>
+                                            <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">JavaScript</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">インタラクティブなWebアプリケーション開発、非同期処理とAPI連携、モダンなES6+記法での効率的な開発</p>
+                            </div>
+                            
+                            <div class="skill-card scroll-animate zoom-in" data-delay="400" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon react-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.36-.034-.471 0-.92.014-1.36.034.44-.572.895-1.096 1.36-1.564zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.866.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.36.034.47 0 .92-.014 1.36-.034-.44.572-.895 1.095-1.36 1.56-.465-.467-.92-.992-1.36-1.56z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">React/Vue</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">コンポーネントベースのSPA構築、状態管理（Redux/Vuex）、パフォーマンス最適化</p>
+                            </div>
+                            
+                            <div class="skill-card scroll-animate zoom-in" data-delay="500" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon mobile-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M17 19H7V5h10v14zm-5-11c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0 6c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zM16 1H8c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">レスポンシブデザイン</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">全デバイス対応のUI/UX設計、モバイルファーストアプローチ、アクセシビリティを考慮した実装</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Backend Skills -->
+                    <div class="skills-category">
+                        <h3 class="category-title">バックエンド</h3>
+                        <div class="skills-grid" role="list">
+                            <div class="skill-card" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon nodejs-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.570,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">Node.js</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">RESTful API設計・開発、リアルタイム通信（WebSocket）、Express.jsを使った高性能なサーバー構築</p>
+                            </div>
+                            
+                            <div class="skill-card" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon python-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09-.33.22zM21.1 6.11l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08-.33.23z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">Python</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">データ分析・機械学習の実装、Django/FastAPIを使ったWeb API開発、自動化スクリプトの作成</p>
+                            </div>
+                            
+                            <div class="skill-card" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon database-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M4,9V12C4,14.21 7.58,16 12,16C16.42,16 20,14.21 20,12V9C20,11.21 16.42,13 12,13C7.58,13 4,11.21 4,9M4,14V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V14C20,16.21 16.42,18 12,18C7.58,18 4,16.21 4,14Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">データベース</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">スケーラブルなデータベース設計、SQL最適化、NoSQL（MongoDB）とRDB（PostgreSQL/MySQL）の使い分け</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools & Others -->
+                    <div class="skills-category">
+                        <h3 class="category-title">ツール・その他</h3>
+                        <div class="skills-grid" role="list">
+                            <div class="skill-card" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon git-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">Git</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">チーム開発でのGitフロー管理、コードレビュープロセス、CI/CDパイプラインとの連携</p>
+                            </div>
+                            
+                            <div class="skill-card" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon docker-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.186m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186H5.136a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">Docker</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">アプリケーションのコンテナ化、開発環境の統一、Dockerfileとdocker-composeを活用した環境構築</p>
+                            </div>
+                            
+                            <div class="skill-card" role="listitem">
+                                <div class="skill-header">
+                                    <div class="skill-icon" aria-hidden="true">
+                                        <svg class="icon aws-icon" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.048.08.064.16.064.24 0 .096-.08.192-.24.288l-.8.528c-.112.08-.224.112-.336.112-.128 0-.256-.064-.384-.176-.112-.112-.208-.224-.288-.368-.08-.144-.176-.304-.256-.48-.64.752-1.44 1.136-2.4 1.136-.688 0-1.232-.192-1.648-.576-.416-.384-.624-.896-.624-1.552 0-.688.24-1.248.736-1.68.48-.432 1.152-.64 1.984-.64.272 0 .544.016.832.064.288.032.576.096.88.144v-.48c0-.496-.112-.843-.32-1.072-.224-.23-.608-.336-1.136-.336-.24 0-.496.032-.752.08-.256.048-.512.128-.768.208-.112.048-.192.064-.256.064-.224 0-.336-.16-.336-.496v-.784c0-.256.032-.432.112-.528.08-.096.224-.192.432-.272.24-.112.528-.208.848-.272.336-.08.688-.112 1.04-.112.784 0 1.36.176 1.712.528.368.352.544.896.544 1.616v2.128zm-3.36 1.248c.256 0 .528-.048.8-.144.272-.096.512-.272.704-.496.112-.128.192-.272.24-.432.048-.16.08-.368.08-.624v-.304c-.208-.048-.432-.08-.672-.112-.24-.016-.48-.032-.704-.032-.496 0-.864.096-1.104.288-.24.192-.368.464-.368.816 0 .336.08.592.256.752.16.176.416.288.768.288zm6.24 1.552c-.288 0-.48-.048-.608-.16-.128-.112-.24-.32-.336-.624l-3.776-12.416c-.096-.32-.144-.528-.144-.624 0-.24.112-.384.352-.384h1.440c.304 0 .512.048.624.16.128.096.224.32.304.624l2.704 10.672 2.512-10.672c.064-.32.16-.528.304-.624.128-.112.336-.16.624-.16h1.168c.304 0 .512.048.624.16.128.096.224.32.304.624l2.544 10.8 2.784-10.8c.08-.32.192-.528.304-.624.128-.112.336-.16.624-.16h1.36c.24 0 .368.112.368.352 0 .064-.016.144-.032.224-.016.096-.048.208-.096.352l-3.872 12.448c-.096.32-.208.528-.336.624-.128.112-.336.16-.608.16h-1.248c-.304 0-.512-.048-.624-.16-.128-.112-.24-.32-.304-.624l-2.496-10.4-2.48 10.384c-.08.32-.176.528-.304.624-.128.112-.336.16-.624.16h-1.248zm19.2.32c-.64 0-1.28-.144-1.856-.416-.576-.272-1.056-.672-1.424-1.168-.176-.24-.272-.48-.272-.704 0-.176.064-.336.208-.464.128-.128.304-.192.496-.192.16 0 .336.032.496.128.176.08.336.176.496.272.32.176.656.304.976.384.336.08.672.128 1.008.128.528 0 .944-.096 1.232-.288.288-.192.432-.464.432-.8 0-.24-.08-.448-.24-.608-.16-.16-.448-.304-.832-.432l-1.184-.368c-.848-.272-1.472-.672-1.856-1.184-.384-.512-.576-1.088-.576-1.728 0-.496.112-.944.336-1.328.224-.384.528-.704.912-.976.384-.256.832-.464 1.328-.576.496-.128 1.024-.176 1.568-.176.24 0 .496.016.736.048.256.032.496.08.736.128.24.064.464.128.672.208.208.08.384.176.528.272.144.112.24.224.304.368.064.128.096.288.096.464v.8c0 .336-.128.496-.352.496-.144 0-.384-.064-.688-.208-.656-.272-1.376-.416-2.16-.416-.48 0-.864.08-1.12.256-.256.176-.384.432-.384.752 0 .24.096.448.272.624.176.176.48.336.912.464l1.168.368c.832.272 1.424.656 1.776 1.184.352.528.528 1.120.528 1.776 0 .512-.112.976-.336 1.376-.224.4-.544.752-.944 1.056-.4.304-.88.528-1.424.688-.592.144-1.2.24-1.856.24z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="skill-info">
+                                        <h4 class="skill-name">AWS</h4>
+                                    </div>
+                                </div>
+                                <p class="skill-description">クラウドインフラの設計・構築、EC2/S3/RDS等のサービス活用、自動デプロイメントの構築</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <header class="section-header scroll-animate">
+                    <h2 class="section-title text-animate" data-text-animation="char-by-char" data-delay="100">Contact</h2>
+                    <p class="section-description scroll-animate" data-delay="200">
+                        お仕事のご相談やお問い合わせはこちらから
+                    </p>
+                </header>
+                
+                <div class="contact-content scroll-animate fade-in-left" data-delay="300">
+                    <!-- Contact Form -->
+                    <div class="contact-form-wrapper">
+                        <form 
+                            class="contact-form" 
+                            action="#" 
+                            method="post"
+                            novalidate
+                            aria-label="お問い合わせフォーム">
+                            
+                            <div class="form-group">
+                                <label for="contact-name" class="form-label">
+                                    お名前 <span class="required" aria-label="必須">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="contact-name" 
+                                    name="name"
+                                    class="form-input"
+                                    required
+                                    aria-describedby="name-error"
+                                    autocomplete="name">
+                                <span id="name-error" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-email" class="form-label">
+                                    メールアドレス <span class="required" aria-label="必須">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="contact-email" 
+                                    name="email"
+                                    class="form-input"
+                                    required
+                                    aria-describedby="email-error"
+                                    autocomplete="email">
+                                <span id="email-error" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-subject" class="form-label">
+                                    件名
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="contact-subject" 
+                                    name="subject"
+                                    class="form-input"
+                                    aria-describedby="subject-error">
+                                <span id="subject-error" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-message" class="form-label">
+                                    メッセージ <span class="required" aria-label="必須">*</span>
+                                </label>
+                                <textarea 
+                                    id="contact-message" 
+                                    name="message"
+                                    class="form-textarea"
+                                    rows="6"
+                                    required
+                                    aria-describedby="message-error"
+                                    placeholder="お問い合わせ内容をご記入ください"></textarea>
+                                <span id="message-error" class="error-message" role="alert" aria-live="polite"></span>
+                            </div>
+                            
+                            <!-- Submit and Reset Buttons -->
+                            <div class="form-buttons">
+                                <button 
+                                    type="submit" 
+                                    class="btn-submit"
+                                    aria-describedby="submit-description">
+                                    送信する
+                                </button>
+                                <button 
+                                    type="button" 
+                                    class="btn-reset"
+                                    aria-label="フォームをリセット">
+                                    クリア
+                                </button>
+                            </div>
+                            
+                            <!-- Form Status Messages will be injected by JavaScript -->
+                        </form>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="contact-info">
+                        <h3>その他の連絡方法</h3>
+                        
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-labelledby="email-icon-title">
+                                        <title id="email-icon-title">メールアイコン</title>
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                </div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Email</div>
+                                    <div class="contact-value">
+                                        <a href="mailto:contact@example.com">contact@example.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-labelledby="location-icon-title">
+                                        <title id="location-icon-title">場所アイコン</title>
+                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                    </svg>
+                                </div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Location</div>
+                                    <div class="contact-value">Tokyo, Japan</div>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                                    </svg>
+                                </div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Response Time</div>
+                                    <div class="contact-value">通常24時間以内に返信</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Links -->
+                        <div class="social-links-contact">
+                            <h4>ソーシャルメディア</h4>
+                            <div class="social-links-grid">
+                                <a href="https://github.com" 
+                                   class="social-link-item"
+                                   aria-label="GitHub"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://linkedin.com" 
+                                   class="social-link-item"
+                                   aria-label="LinkedIn"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://twitter.com" 
+                                   class="social-link-item"
+                                   aria-label="Twitter"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                    </svg>
+                                </a>
+                                <a href="mailto:contact@example.com" 
+                                   class="social-link-item"
+                                   aria-label="Email"
+                                   rel="noopener noreferrer">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer role="contentinfo" class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Copyright -->
+                <div class="footer-copyright">
+                    <p>&copy; <span id="current-year">2025</span> Portfolio. All rights reserved.</p>
+                    <p class="footer-updated">Last updated: <time datetime="2025-01-01">January 2025</time></p>
+                </div>
+                
+                <!-- Footer Navigation -->
+                <nav role="navigation" aria-label="フッターナビゲーション" class="footer-nav">
+                    <ul class="footer-nav-list">
+                        <li class="footer-nav-item">
+                            <a href="#hero" class="footer-nav-link">Home</a>
+                        </li>
+                        <li class="footer-nav-item">
+                            <a href="#projects" class="footer-nav-link">Projects</a>
+                        </li>
+                        <li class="footer-nav-item">
+                            <a href="#contact" class="footer-nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <!-- Footer Social Links -->
+                <div class="footer-social">
+                    <p class="footer-social-title">Follow Me</p>
+                    <div class="footer-social-links">
+                        <a href="https://github.com" 
+                           class="footer-social-link" 
+                           aria-label="GitHubプロフィールを開く"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="footer-social-icon">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span class="sr-only">GitHub</span>
+                        </a>
+                        <a href="https://linkedin.com" 
+                           class="footer-social-link" 
+                           aria-label="LinkedInプロフィールを開く"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="footer-social-icon">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                            <span class="sr-only">LinkedIn</span>
+                        </a>
+                        <a href="https://twitter.com" 
+                           class="footer-social-link" 
+                           aria-label="Twitterプロフィールを開く"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="footer-social-icon">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                            <span class="sr-only">Twitter</span>
+                        </a>
+                        <a href="mailto:contact@example.com" 
+                           class="footer-social-link" 
+                           aria-label="メールを送信">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="footer-social-icon">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span class="sr-only">Email</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Back to Top -->
+                <button 
+                    type="button" 
+                    class="back-to-top"
+                    aria-label="ページの先頭に戻る"
+                    title="トップへ戻る">
+                    <span class="back-to-top-icon" aria-hidden="true">↑</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Critical JavaScript (immediate loading) -->
+    <script src="js/modules/lazyload.js" defer></script>
+    <script src="js/modules/navigation.js" defer></script>
+    <script src="js/modules/projects.js" defer></script>
+    
+    <!-- Performance optimized script loader -->
+    <script>
+    (function() {
+        'use strict';
+        
+        // 必要最小限のスクリプト読み込みを最適化
+        const loadScript = (src, async = true, defer = true) => {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                if (async) script.async = true;
+                if (defer) script.defer = true;
+                script.onload = () => resolve(script);
+                script.onerror = () => reject(new Error(`Failed to load ${src}`));
+                document.head.appendChild(script);
+            });
+        };
+        
+        // Intersection Observerでビューポート内コンテンツに必要なスクリプトを動的読み込み
+        const loadScriptOnIntersection = (selector, scriptSrc) => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadScript(scriptSrc);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '100px' });
+            
+            const element = document.querySelector(selector);
+            if (element) {
+                observer.observe(element);
+            } else {
+                // 要素が見つからない場合は直接読み込み
+                loadScript(scriptSrc);
+            }
+        };
+        
+        // DOM読み込み完了後に非クリティカルスクリプトを読み込み
+        document.addEventListener('DOMContentLoaded', () => {
+            // メインアプリケーション
+            loadScript('js/main.js');
+            
+            // 重要なコンテンツは即座に読み込み済み
+            
+            // セクション別の遅延読み込み
+            loadScriptOnIntersection('#skills', 'js/modules/skills.js');
+            loadScriptOnIntersection('#contact', 'js/modules/form.js');
+            loadScriptOnIntersection('footer', 'js/modules/footer.js');
+            
+            // アニメーションとスクロール関連（優先度低）
+            setTimeout(() => {
+                loadScript('js/modules/scroll.js');
+                loadScript('js/modules/animations.js');
+            }, 1000);
+        });
+        
+        // ページ読み込み後のパフォーマンス測定
+        window.addEventListener('load', () => {
+            // Core Web Vitals 測定
+            if ('PerformanceObserver' in window) {
+                // FCP (First Contentful Paint)
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    entries.forEach(entry => {
+                        if (entry.name === 'first-contentful-paint') {
+                            console.log('FCP:', entry.startTime.toFixed(2) + 'ms');
+                        }
+                    });
+                }).observe({ entryTypes: ['paint'] });
+                
+                // LCP (Largest Contentful Paint)
+                new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const lastEntry = entries[entries.length - 1];
+                    console.log('LCP:', lastEntry.startTime.toFixed(2) + 'ms');
+                }).observe({ entryTypes: ['largest-contentful-paint'] });
+                
+                // CLS (Cumulative Layout Shift)
+                new PerformanceObserver((list) => {
+                    let cls = 0;
+                    list.getEntries().forEach(entry => {
+                        if (!entry.hadRecentInput) {
+                            cls += entry.value;
+                        }
+                    });
+                    console.log('CLS:', cls.toFixed(4));
+                }).observe({ entryTypes: ['layout-shift'] });
+            }
+        });
+        
+        // Service Worker 登録
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                        
+                        // 更新があった場合の処理
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // 新しいバージョンが利用可能
+                                    if (confirm('新しいバージョンが利用可能です。更新しますか？')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed: ', error);
+                    });
+            });
+        }
+    })();
+    </script>
 </body>
 </html>

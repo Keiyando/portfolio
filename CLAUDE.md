@@ -1,87 +1,169 @@
-# CLAUDE.md - ポートフォリオサイト実装ガイドライン
+# CLAUDE.md
 
-## 🎯 プロジェクト固有の目標
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-### 主要目標
-- **3ヶ月で40個のアプリ制作**: 効率的な開発フローの確立
-- **採用担当者への訴求**: プロフェッショナルな印象を与える
-- **技術力の可視化**: スキルと成果物を効果的に展示
-- **パフォーマンス重視**: Lighthouse Score 90以上達成
-- **アクセシビリティ準拠**: WCAG 2.1 Level AA対応
+このファイルは、Claude Code (claude.ai/code) がこのリポジトリで作業する際のガイダンスを提供します。
+
+## プロジェクト概要
+
+このポートフォリオサイトは、Vanilla HTML、CSS、JavaScriptで構築されるプロフェッショナルなWebサイトです。フレームワークを使用せず、高パフォーマンスとアクセシビリティを重視した作りになっています。
+
+## 開発コマンド
+
+### 開発サーバーの起動
+**重要**: 開発サーバーの起動はユーザーが手動で行います。Claude Codeは開発サーバーを起動してはいけません。
+
+```bash
+# Python 3のローカルサーバー（ユーザーが実行）
+python -m http.server 8000
+
+# Node.jsのlive-server（利用可能な場合・ユーザーが実行）
+npx live-server
+
+# http://localhost:8000 でサイトを確認
+```
+
+### 必須の通知システム
+**重要**: すべての重要な作業後には通知を実行してください
+```bash
+# 実装完了時
+./notification.sh "Phase X完了"
+
+# 選択肢提示時（必須）
+./notification.sh "選択肢提示"
+
+# エラー発生時
+./notification.sh "エラー発生"
+```
+
+## アーキテクチャの概要
+
+### ファイル構成
+```
+portfolio/
+├── index.html                 # シングルページアプリケーション
+├── css/
+│   ├── style.css             # CSS変数を使用したメインスタイル
+│   ├── responsive.css        # モバイルファースト レスポンシブ対応
+│   └── animations.css        # CSS アニメーション（非同期読み込み）
+├── js/
+│   ├── main.js              # モジュールパターンのエントリーポイント
+│   ├── modules/             # 機能別モジュール
+│   │   ├── scroll.js        # スムーズスクロール、Intersection Observer
+│   │   └── animations.js    # アニメーション制御
+│   └── utils/               # ユーティリティ関数（debounce、throttle）
+├── assets/images/           # WebP + JPGフォールバック画像
+└── data/                    # プロジェクト用JSONデータ
+```
+
+### 主要アーキテクチャパターン
+1. **モジュールパターン**: すべてのJavaScriptはIIFEモジュールパターンでカプセル化
+2. **CSS変数**: `:root`セレクターで一元管理されたデザインシステム
+3. **プログレッシブエンハンスメント**: JavaScript無効でも基本機能は動作
+4. **パフォーマンス最適化**: クリティカルCSSインライン、非クリティカルCSS非同期読み込み
+5. **アクセシビリティファースト**: セマンティックHTML、ARIA属性、キーボードナビゲーション
+
+### パフォーマンス目標
+- Lighthouse Score: 90以上（全カテゴリ）
+- First Contentful Paint: < 1.5秒
+- Largest Contentful Paint: < 2.5秒
+- Cumulative Layout Shift: < 0.1
+- Time to Interactive: < 3.5秒
 
 ### 技術スタック
 - **言語**: HTML5, CSS3, Vanilla JavaScript（フレームワーク不使用）
 - **ビルドツール**: なし（純粋な静的ファイル）
-- **ホスティング**: GitHub Pages / Netlify / Vercel
-- **バージョン管理**: Git
+- **ブラウザサポート**: Chrome、Firefox、Safari、Edge（最新2バージョン）
+- **レスポンシブ範囲**: 320px〜1920px+のビューポート
 
-## 🔴 必須実装手順
+## タスク管理システム
 
-### 📋 チケット管理とTodo追跡
-実装タスクは `/docs` ディレクトリ内の番号付きマークダウンファイルで管理：
+### チケットベースのワークフロー
+実装タスクは `/docs` ディレクトリ内の番号付きマークダウンファイルで管理されています：
 
-#### チケットファイル構成
-- `001-project-setup.md`: プロジェクトセットアップ
-- `002-html-structure.md`: HTML基本構造
-- 各チケットには詳細なタスクリストを含む
+#### チケット構成
+- `001-project-setup.md`〜`017-documentation.md`
+- 4つのフェーズに分かれた段階的開発サイクル
+- チェックボックスシステム: `[ ]` → `[x]` で完了をマーク
 
-#### Todo管理ルール
-**重要**: タスク完了時の更新方法
-```markdown
-# 未完了タスク
-- [ ] タスク名
+### 開発プロセス
+1. **該当チケット確認**: `/docs/` ディレクトリの関連チケットを読む
+2. **タスク開始前**: 作業開始前にタスクステータスを更新
+3. **アーキテクチャパターン適用**: 既存のコード規約に従った実装
+4. **クロスブラウザテスト**: 全対応ブラウザでの動作確認
+5. **実装ログ記録**: 詳細な変更履歴を記録
+6. **タスク完了**: チケット内のチェックボックスを `[x]` にマーク
+7. **通知実行**: `notification.sh` で完了通知
 
-# 完了タスク（チェックを入れる）
-- [x] タスク名
+**必須**: 
+- タスク完了時には `/docs/` 内のチェックボックスを必ず更新
+- すべての実装で詳細なログを記録
+- 重要な節目で通知を実行
+
+## コーディング標準
+
+### HTML規約
+- セマンティックHTML5要素の使用
+- 適切なARIA属性とrole属性の設定
+- 全画像にalt属性を必須で設定
+- キーボードナビゲーション対応
+
+### CSS規約
+```css
+/* CSS変数による一元管理 */
+:root {
+  --color-primary: #2563eb;
+  --color-secondary: #10b981;
+  --font-base: 16px;
+  --space-sm: 1rem;
+}
+
+/* BEM命名規則 */
+.card { /* ブロック */ }
+.card__header { /* エレメント */ }
+.card--featured { /* モディファイア */ }
 ```
 
-**YOU MUST**: 
-- タスク実行時、該当チケットファイルを開く
-- 完了したタスクには `[x]` でチェックを入れる
-- チケット内のすべてのタスクが完了したら、チケット自体を完了とマーク
-- 実装ログと連携して記録を残す
+### JavaScript規約
+- IIFE（即座実行関数式）モジュールパターン
+- 適切なエラーハンドリング（try/catch）
+- デバウンス/スロットルの適切な使用
+- パフォーマンス測定フックの組み込み
 
-### 📝 フェーズ別実装ログ
-各フェーズ完了時に以下の形式で記録：
+## 品質保証とテスト
 
-```markdown
-## 実装ログ: Phase [番号] - [フェーズ名]
-### 日時: [YYYY-MM-DD HH:MM]
+### テスト要件
+- **機能テスト**: 全リンク、フォーム、フィルター機能の動作確認
+- **レスポンシブテスト**: 320px〜1920pxでの表示確認
+- **ブラウザテスト**: Chrome、Firefox、Safari、Edge での動作確認
+- **アクセシビリティテスト**: キーボードナビゲーション、スクリーンリーダー対応
+- **パフォーマンステスト**: Lighthouse Score 90以上の維持
 
-### 完了タスク
-- [x] HTML構造の作成
-- [x] 基本CSS設定
-- [x] レスポンシブグリッド実装
-
-### 作成/変更ファイル
-- `index.html`: 基本構造とセマンティックHTML
-- `css/style.css`: 基本スタイルとCSS変数定義
-- `css/responsive.css`: ブレークポイント設定
-
-### パフォーマンス測定
-- Lighthouse Score: [スコア]
-- FCP: [秒]
-- LCP: [秒]
-- CLS: [値]
-
-### 次フェーズの準備
-- [ ] コンテンツ素材の準備
-- [ ] 画像の最適化
-```
-
-### 🔔 通知タイミング
+### デプロイメント
 ```bash
-# 各フェーズ完了時
-./notification.sh "Phase 1 基礎構築完了"
-
-# 重要な選択時
-./notification.sh "デプロイ先選択必要"
-
-# エラー発生時
-./notification.sh "ビルドエラー発生"
+# GitHub Pages へのデプロイ
+git add .
+git commit -m "Deploy: Portfolio site v1.0.0"
+git push origin main
 ```
 
-## 📋 実装フェーズと詳細タスク
+## 重要な制約事項
+
+### 必ず守ること
+1. **段階的実装**: 各フェーズを確実に完了してから次へ進む
+2. **チケット更新**: `/docs/` ファイル内のチェックボックスを必ず更新
+3. **通知実行**: 重要な作業完了時は `notification.sh` を実行
+4. **パフォーマンス測定**: 各段階でLighthouseテストを実行
+5. **アクセシビリティ準拠**: WCAG 2.1 Level AA要件の遵守
+
+### やってはいけないこと
+1. **フレームワークの導入**: Vanilla JSのシンプルさを保つ
+2. **過度な機能追加**: MVPに集中し、段階的に拡張
+3. **テストの省略**: 全機能に対するテストは必須
+4. **アクセシビリティの軽視**: すべての要件を満たすこと
+5. **ログ記録の省略**: 実装ログは必ず記録
+
+## 実装フェーズ
 
 ### Phase 1: 基礎構築（Day 1）
 ```
@@ -537,3 +619,34 @@ getTTFB(sendToAnalytics);
 *最終更新: 2025年1月*
 *バージョン: 1.0.0*
 *このドキュメントは portfolio-spec.md と連携して使用すること*
+
+## Validation Commands
+
+### Error Checking
+```bash
+# Check for broken links
+npx linkinator index.html --verbosity error
+
+# Validate HTML
+npx html-validate index.html
+
+# Check CSS syntax
+npx stylelint css/**/*.css
+
+# Performance audit
+npx lighthouse http://localhost:8000 --output json --output html --output-path ./tests/lighthouse/
+
+# Check file permissions
+ls -la notification.sh  # Should show executable permissions (-rwxr-xr-x)
+```
+
+### Quick Development Server Test
+```bash
+# Test if development server is accessible
+curl -I http://localhost:8000
+```
+
+## Advice and Memories
+- エラーがないかのチェックをチケット完了後に必ず実施してください。
+- Use `python -m http.server 8000` as the primary development server command
+- Always run `./notification.sh "task description"` after completing significant work

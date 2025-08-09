@@ -36,34 +36,20 @@
    * 基本機能の初期化
    */
   function initializeBasicFeatures() {
-    // スムーズスクロールの設定
-    setupSmoothScrolling();
+    // NavigationControllerの初期化は自動で行われる
     
     // アクセシビリティ機能の設定
     setupAccessibility();
     
+    // コンタクトフォームの初期化
+    if (typeof ContactForm !== 'undefined') {
+      ContactForm.init();
+    }
+    
     console.log('Basic features initialized');
   }
   
-  /**
-   * スムーズスクロールの設定
-   */
-  function setupSmoothScrolling() {
-    // アンカーリンクのスムーズスクロール
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-  }
+  
   
   /**
    * アクセシビリティ機能の設定

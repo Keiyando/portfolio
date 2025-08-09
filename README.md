@@ -62,7 +62,7 @@ portfolio/
 
 1. リポジトリをクローン
 ```bash
-git clone <repository-url>
+git clone https://github.com/Keiyando/portfolio.git
 cd portfolio
 ```
 
@@ -99,6 +99,55 @@ npx live-server
 - WCAG 2.1 Level AA準拠
 - クロスブラウザ対応
 - レスポンシブデザイン
+
+## Vercelへのデプロイ
+
+### 自動デプロイ手順
+
+1. **デプロイ前チェック実行**
+```bash
+./deploy-check.sh
+```
+
+2. **Vercelアカウントセットアップ**
+   - [Vercel.com](https://vercel.com) でアカウント作成
+   - GitHubアカウントと連携
+
+3. **プロジェクトインポート**
+   - Vercelダッシュボードで「New Project」をクリック
+   - GitHubリポジトリを選択
+   - `vercel.json`設定が自動的に適用されます
+
+4. **環境変数設定**（必要な場合）
+   - Project Settings > Environment Variables
+   - 本番環境用の変数を設定
+
+5. **カスタムドメイン設定**（オプション）
+   - Project Settings > Domains
+   - カスタムドメインを追加
+   - DNSレコードを設定
+
+### デプロイ設定ファイル
+
+- `vercel.json`: Vercel設定（ルーティング、ヘッダー、キャッシュ）
+- `.vercelignore`: デプロイ時に除外するファイル
+- `deploy-check.sh`: デプロイ前自動チェックスクリプト
+
+### セキュリティヘッダー
+
+本サイトには以下のセキュリティヘッダーが設定されています：
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `X-XSS-Protection: 1; mode=block`
+- `Strict-Transport-Security` (HSTS)
+- `Referrer-Policy: strict-origin-when-cross-origin`
+
+### パフォーマンス最適化
+
+- 静的ファイルのキャッシュ（1年間）
+- Service Workerのキャッシュ無効化
+- クリーンURL対応
+- 自動HTTPS リダイレクト
 
 ## 貢献
 

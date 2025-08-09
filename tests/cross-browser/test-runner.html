@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クロスブラウザテスト - 統合テストランナー</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .browser-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .info-card h3 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .test-suites {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .test-suite {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .test-suite:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .test-suite h3 {
+            color: #1f2937;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+
+        .test-suite .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .test-suite p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .run-button {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .run-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .run-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .run-button.running {
+            background: #3b82f6;
+        }
+
+        .run-button.completed {
+            background: #10b981;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        .status-pending { background: #6b7280; }
+        .status-running { background: #3b82f6; animation: pulse 1.5s infinite; }
+        .status-completed { background: #10b981; }
+        .status-error { background: #ef4444; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .master-controls {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .master-controls h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .master-button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .master-button.primary {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+        }
+
+        .master-button.secondary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        .master-button.danger {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+        }
+
+        .master-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .results-container {
+            margin-top: 30px;
+        }
+
+        .results-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .summary-item .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+            display: block;
+        }
+
+        .summary-item .label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .test-log {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 14px;
+            color: #e5e7eb;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .log-info { color: #60a5fa; }
+        .log-success { color: #34d399; }
+        .log-warning { color: #fbbf24; }
+        .log-error { color: #f87171; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .test-suites {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 クロスブラウザテスト統合ランナー</h1>
+            <p>ポートフォリオサイトの包括的ブラウザ互換性テスト</p>
+        </div>
+
+        <div class="browser-info" id="browserInfo">
+            <!-- ブラウザ情報が動的に追加される -->
+        </div>
+
+        <div class="master-controls">
+            <h2>🎛️ マスターコントロール</h2>
+            <div class="control-buttons">
+                <button class="master-button primary" onclick="runAllTests()">
+                    🚀 全テスト実行
+                </button>
+                <button class="master-button secondary" onclick="generateFullReport()">
+                    📊 総合レポート生成
+                </button>
+                <button class="master-button secondary" onclick="exportResults()">
+                    📋 結果エクスポート
+                </button>
+                <button class="master-button danger" onclick="clearResults()">
+                    🗑️ 結果クリア
+                </button>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="overallProgress"></div>
+            </div>
+            <div id="progressText" style="text-align: center; margin-top: 10px; color: #6b7280;">
+                待機中...
+            </div>
+        </div>
+
+        <div class="test-suites">
+            <div class="test-suite" id="suite-automated">
+                <h3><span class="icon">🤖</span> 自動化テスト</h3>
+                <p>ブラウザ機能サポート、JavaScript API、パフォーマンスの自動検証</p>
+                <div class="status-indicator status-pending" id="status-automated"></div>
+                <button class="run-button" onclick="runAutomatedTests()" id="btn-automated">
+                    実行
+                </button>
+            </div>
+
+            <div class="test-suite" id="suite-responsive">
+                <h3><span class="icon">📱</span> レスポンシブテスト</h3>
+                <p>各解像度でのレイアウト確認とビューポート最適化検証</p>
+                <div class="status-indicator status-pending" id="status-responsive"></div>
+                <button class="run-button" onclick="runResponsiveTests()" id="btn-responsive">
+                    実行
+                </button>
+            </div>
+
+            <div class="test-suite" id="suite-functional">
+                <h3><span class="icon">⚙️</span> 機能テスト</h3>
+                <p>ナビゲーション、フォーム、アニメーションなど主要機能の動作確認</p>
+                <div class="status-indicator status-pending" id="status-functional"></div>
+                <button class="run-button" onclick="runFunctionalTests()" id="btn-functional">
+                    実行
+                </button>
+            </div>
+
+            <div class="test-suite" id="suite-edge">
+                <h3><span class="icon">🔍</span> エッジケーステスト</h3>
+                <p>特殊環境、制限条件下での動作とフォールバック確認</p>
+                <div class="status-indicator status-pending" id="status-edge"></div>
+                <button class="run-button" onclick="runEdgeCaseTests()" id="btn-edge">
+                    実行
+                </button>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <div class="results-summary">
+                <h2>📈 テスト結果サマリー</h2>
+                <div class="summary-grid" id="summaryGrid">
+                    <!-- 結果サマリーが動的に追加される -->
+                </div>
+            </div>
+            
+            <div class="test-log" id="testLog">
+                <!-- テストログが動的に追加される -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 依存スクリプトの読み込み -->
+    <script src="polyfills.js"></script>
+    <script src="functional-tests.js"></script>
+    <script src="edge-case-tests.js"></script>
+    <script src="responsive-tester.js"></script>
+
+    <script>
+        // グローバル変数
+        let testResults = {
+            automated: null,
+            responsive: null,
+            functional: null,
+            edge: null
+        };
+        
+        let testProgress = {
+            total: 4,
+            completed: 0
+        };
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            displayBrowserInfo();
+            initializeTestRunner();
+        });
+
+        /**
+         * ブラウザ情報表示
+         */
+        function displayBrowserInfo() {
+            const info = {
+                browser: getBrowserName() + ' ' + getBrowserVersion(),
+                platform: navigator.platform,
+                userAgent: navigator.userAgent,
+                viewport: `${window.innerWidth} × ${window.innerHeight}`,
+                screen: `${screen.width} × ${screen.height}`,
+                devicePixelRatio: window.devicePixelRatio || 1,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine
+            };
+
+            const container = document.getElementById('browserInfo');
+            container.innerHTML = `
+                <div class="info-card">
+                    <h3>🌐 ブラウザ</h3>
+                    <div class="info-value">${info.browser}</div>
+                </div>
+                <div class="info-card">
+                    <h3>💻 プラットフォーム</h3>
+                    <div class="info-value">${info.platform}</div>
+                </div>
+                <div class="info-card">
+                    <h3>📐 ビューポート</h3>
+                    <div class="info-value">${info.viewport}</div>
+                </div>
+                <div class="info-card">
+                    <h3>🖥️ スクリーン解像度</h3>
+                    <div class="info-value">${info.screen}</div>
+                </div>
+                <div class="info-card">
+                    <h3>🔍 ピクセル比</h3>
+                    <div class="info-value">${info.devicePixelRatio}x</div>
+                </div>
+                <div class="info-card">
+                    <h3>🌍 言語</h3>
+                    <div class="info-value">${info.language}</div>
+                </div>
+                <div class="info-card">
+                    <h3>🍪 Cookie</h3>
+                    <div class="info-value">${info.cookieEnabled ? '✅ 有効' : '❌ 無効'}</div>
+                </div>
+                <div class="info-card">
+                    <h3>📡 オンライン</h3>
+                    <div class="info-value">${info.onLine ? '✅ 接続中' : '❌ オフライン'}</div>
+                </div>
+            `;
+        }
+
+        /**
+         * テストランナーの初期化
+         */
+        function initializeTestRunner() {
+            // 依存スクリプトの読み込み確認
+            const dependencies = [
+                { name: 'FunctionalTests', available: typeof FunctionalTests !== 'undefined' },
+                { name: 'EdgeCaseTests', available: typeof EdgeCaseTests !== 'undefined' },
+                { name: 'ResponsiveTester', available: typeof ResponsiveTester !== 'undefined' }
+            ];
+
+            const missingDeps = dependencies.filter(dep => !dep.available);
+            if (missingDeps.length > 0) {
+                logMessage(`警告: 依存スクリプトが不足 - ${missingDeps.map(d => d.name).join(', ')}`, 'warning');
+            }
+
+            logMessage('テストランナー初期化完了', 'success');
+        }
+
+        /**
+         * 自動化テストの実行
+         */
+        async function runAutomatedTests() {
+            updateSuiteStatus('automated', 'running');
+            logMessage('🤖 自動化テスト開始', 'info');
+
+            try {
+                // 自動化テストの実行（automated-tests.htmlの機能を統合）
+                const results = await runAutomatedTestSuite();
+                testResults.automated = results;
+                updateSuiteStatus('automated', 'completed');
+                logMessage('✅ 自動化テスト完了', 'success');
+            } catch (error) {
+                updateSuiteStatus('automated', 'error');
+                logMessage(`❌ 自動化テスト失敗: ${error.message}`, 'error');
+            }
+
+            updateProgress();
+        }
+
+        /**
+         * レスポンシブテストの実行
+         */
+        async function runResponsiveTests() {
+            updateSuiteStatus('responsive', 'running');
+            logMessage('📱 レスポンシブテスト開始', 'info');
+
+            try {
+                if (typeof ResponsiveTester !== 'undefined') {
+                    const results = await ResponsiveTester.runFullTest();
+                    testResults.responsive = results;
+                    updateSuiteStatus('responsive', 'completed');
+                    logMessage('✅ レスポンシブテスト完了', 'success');
+                } else {
+                    throw new Error('ResponsiveTester not available');
+                }
+            } catch (error) {
+                updateSuiteStatus('responsive', 'error');
+                logMessage(`❌ レスポンシブテスト失敗: ${error.message}`, 'error');
+            }
+
+            updateProgress();
+        }
+
+        /**
+         * 機能テストの実行
+         */
+        async function runFunctionalTests() {
+            updateSuiteStatus('functional', 'running');
+            logMessage('⚙️ 機能テスト開始', 'info');
+
+            try {
+                if (typeof FunctionalTests !== 'undefined') {
+                    const results = await FunctionalTests.runAllTests();
+                    testResults.functional = results;
+                    updateSuiteStatus('functional', 'completed');
+                    logMessage('✅ 機能テスト完了', 'success');
+                } else {
+                    throw new Error('FunctionalTests not available');
+                }
+            } catch (error) {
+                updateSuiteStatus('functional', 'error');
+                logMessage(`❌ 機能テスト失敗: ${error.message}`, 'error');
+            }
+
+            updateProgress();
+        }
+
+        /**
+         * エッジケーステストの実行
+         */
+        async function runEdgeCaseTests() {
+            updateSuiteStatus('edge', 'running');
+            logMessage('🔍 エッジケーステスト開始', 'info');
+
+            try {
+                if (typeof EdgeCaseTests !== 'undefined') {
+                    const results = await EdgeCaseTests.runAllTests();
+                    testResults.edge = results;
+                    updateSuiteStatus('edge', 'completed');
+                    logMessage('✅ エッジケーステスト完了', 'success');
+                } else {
+                    throw new Error('EdgeCaseTests not available');
+                }
+            } catch (error) {
+                updateSuiteStatus('edge', 'error');
+                logMessage(`❌ エッジケーステスト失敗: ${error.message}`, 'error');
+            }
+
+            updateProgress();
+        }
+
+        /**
+         * 全テストの実行
+         */
+        async function runAllTests() {
+            logMessage('🚀 全テスト開始', 'info');
+            testProgress.completed = 0;
+            updateOverallProgress();
+
+            const tests = [
+                runAutomatedTests,
+                runResponsiveTests,
+                runFunctionalTests,
+                runEdgeCaseTests
+            ];
+
+            for (const test of tests) {
+                await test();
+                await sleep(500); // テスト間の待機時間
+            }
+
+            logMessage('🎉 全テスト完了', 'success');
+            showResults();
+        }
+
+        /**
+         * 自動化テストスイートの実行
+         */
+        async function runAutomatedTestSuite() {
+            const tests = [
+                { name: 'CSS Grid サポート', test: () => CSS.supports('display', 'grid') },
+                { name: 'Flexbox サポート', test: () => CSS.supports('display', 'flex') },
+                { name: 'CSS Variables サポート', test: () => CSS.supports('--custom-property', '1') },
+                { name: 'IntersectionObserver API', test: () => 'IntersectionObserver' in window },
+                { name: 'Fetch API', test: () => 'fetch' in window },
+                { name: 'LocalStorage', test: () => {
+                    try {
+                        localStorage.setItem('test', 'test');
+                        localStorage.removeItem('test');
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                }}
+            ];
+
+            const results = [];
+            for (const test of tests) {
+                try {
+                    const result = test.test();
+                    results.push({
+                        name: test.name,
+                        status: result ? 'pass' : 'fail',
+                        message: result ? 'サポート済み' : '未サポート'
+                    });
+                } catch (error) {
+                    results.push({
+                        name: test.name,
+                        status: 'error',
+                        message: error.message
+                    });
+                }
+            }
+
+            return results;
+        }
+
+        /**
+         * スイートのステータス更新
+         */
+        function updateSuiteStatus(suite, status) {
+            const statusIndicator = document.getElementById(`status-${suite}`);
+            const button = document.getElementById(`btn-${suite}`);
+            
+            if (statusIndicator) {
+                statusIndicator.className = `status-indicator status-${status}`;
+            }
+            
+            if (button) {
+                switch (status) {
+                    case 'running':
+                        button.textContent = '実行中...';
+                        button.disabled = true;
+                        button.className = 'run-button running';
+                        break;
+                    case 'completed':
+                        button.textContent = '完了 ✅';
+                        button.disabled = false;
+                        button.className = 'run-button completed';
+                        break;
+                    case 'error':
+                        button.textContent = 'エラー ❌';
+                        button.disabled = false;
+                        button.className = 'run-button';
+                        break;
+                    default:
+                        button.textContent = '実行';
+                        button.disabled = false;
+                        button.className = 'run-button';
+                }
+            }
+        }
+
+        /**
+         * 進捗更新
+         */
+        function updateProgress() {
+            testProgress.completed++;
+            updateOverallProgress();
+        }
+
+        /**
+         * 全体進捗更新
+         */
+        function updateOverallProgress() {
+            const percentage = (testProgress.completed / testProgress.total) * 100;
+            const progressFill = document.getElementById('overallProgress');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressFill) {
+                progressFill.style.width = `${percentage}%`;
+            }
+            
+            if (progressText) {
+                progressText.textContent = `${testProgress.completed}/${testProgress.total} 完了 (${Math.round(percentage)}%)`;
+            }
+        }
+
+        /**
+         * 結果表示
+         */
+        function showResults() {
+            const container = document.getElementById('resultsContainer');
+            container.style.display = 'block';
+            generateResultsSummary();
+        }
+
+        /**
+         * 結果サマリー生成
+         */
+        function generateResultsSummary() {
+            const summary = calculateOverallSummary();
+            const grid = document.getElementById('summaryGrid');
+            
+            grid.innerHTML = `
+                <div class="summary-item">
+                    <span class="number">${summary.totalTests}</span>
+                    <div class="label">総テスト数</div>
+                </div>
+                <div class="summary-item">
+                    <span class="number">${summary.passed}</span>
+                    <div class="label">成功</div>
+                </div>
+                <div class="summary-item">
+                    <span class="number">${summary.warnings}</span>
+                    <div class="label">警告</div>
+                </div>
+                <div class="summary-item">
+                    <span class="number">${summary.failed}</span>
+                    <div class="label">失敗</div>
+                </div>
+                <div class="summary-item">
+                    <span class="number">${summary.passRate}%</span>
+                    <div class="label">成功率</div>
+                </div>
+                <div class="summary-item">
+                    <span class="number">${summary.totalDuration}ms</span>
+                    <div class="label">実行時間</div>
+                </div>
+            `;
+        }
+
+        /**
+         * 全体サマリー計算
+         */
+        function calculateOverallSummary() {
+            let totalTests = 0, passed = 0, warnings = 0, failed = 0, totalDuration = 0;
+
+            Object.values(testResults).forEach(result => {
+                if (result && Array.isArray(result)) {
+                    totalTests += result.length;
+                    result.forEach(test => {
+                        if (test.status === 'pass') passed++;
+                        else if (test.status === 'warning') warnings++;
+                        else if (test.status === 'fail') failed++;
+                        if (test.duration) totalDuration += test.duration;
+                    });
+                }
+            });
+
+            return {
+                totalTests,
+                passed,
+                warnings,
+                failed,
+                passRate: totalTests > 0 ? Math.round((passed / totalTests) * 100) : 0,
+                totalDuration
+            };
+        }
+
+        /**
+         * 総合レポート生成
+         */
+        function generateFullReport() {
+            const reportWindow = window.open('', '_blank', 'width=1000,height=800');
+            const reportHTML = buildFullReportHTML();
+            
+            reportWindow.document.write(reportHTML);
+            reportWindow.document.close();
+            
+            logMessage('📊 総合レポートを生成しました', 'success');
+        }
+
+        /**
+         * レポートHTML生成
+         */
+        function buildFullReportHTML() {
+            const summary = calculateOverallSummary();
+            const timestamp = new Date().toLocaleString('ja-JP');
+            
+            return `
+                <!DOCTYPE html>
+                <html lang="ja">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>クロスブラウザテスト 総合レポート</title>
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 20px; line-height: 1.6; }
+                        .header { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+                        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+                        .summary-item { text-align: center; padding: 15px; background: #e9ecef; border-radius: 6px; }
+                        .test-section { margin: 30px 0; }
+                        .test-result { padding: 10px; margin: 5px 0; border-radius: 4px; }
+                        .pass { background: #d4edda; }
+                        .warning { background: #fff3cd; }
+                        .fail { background: #f8d7da; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>🔍 クロスブラウザテスト 総合レポート</h1>
+                        <p><strong>サイト:</strong> ${window.location.href}</p>
+                        <p><strong>実施日時:</strong> ${timestamp}</p>
+                        <p><strong>ブラウザ:</strong> ${getBrowserName()} ${getBrowserVersion()}</p>
+                    </div>
+
+                    <div class="summary">
+                        <div class="summary-item">
+                            <h3>${summary.totalTests}</h3>
+                            <p>総テスト数</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${summary.passed}</h3>
+                            <p>成功</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${summary.warnings}</h3>
+                            <p>警告</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${summary.failed}</h3>
+                            <p>失敗</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${summary.passRate}%</h3>
+                            <p>成功率</p>
+                        </div>
+                    </div>
+
+                    ${Object.entries(testResults).map(([suite, results]) => {
+                        if (!results || !Array.isArray(results)) return '';
+                        return `
+                            <div class="test-section">
+                                <h2>${getSuiteName(suite)} (${results.length}件)</h2>
+                                ${results.map(result => `
+                                    <div class="test-result ${result.status}">
+                                        <strong>${result.name}</strong>: ${result.message}
+                                        ${result.duration ? ` (${result.duration}ms)` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }).join('')}
+                </body>
+                </html>
+            `;
+        }
+
+        /**
+         * スイート名取得
+         */
+        function getSuiteName(suite) {
+            const names = {
+                automated: '🤖 自動化テスト',
+                responsive: '📱 レスポンシブテスト',
+                functional: '⚙️ 機能テスト',
+                edge: '🔍 エッジケーステスト'
+            };
+            return names[suite] || suite;
+        }
+
+        /**
+         * 結果エクスポート
+         */
+        function exportResults() {
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                browser: getBrowserName() + ' ' + getBrowserVersion(),
+                platform: navigator.platform,
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                results: testResults,
+                summary: calculateOverallSummary()
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cross-browser-test-results-${new Date().getTime()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            logMessage('📋 結果をエクスポートしました', 'success');
+        }
+
+        /**
+         * 結果クリア
+         */
+        function clearResults() {
+            testResults = {
+                automated: null,
+                responsive: null,
+                functional: null,
+                edge: null
+            };
+            testProgress.completed = 0;
+            
+            // UI をリセット
+            ['automated', 'responsive', 'functional', 'edge'].forEach(suite => {
+                updateSuiteStatus(suite, 'pending');
+            });
+            
+            updateOverallProgress();
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.getElementById('testLog').innerHTML = '';
+            
+            logMessage('🗑️ 結果をクリアしました', 'info');
+        }
+
+        /**
+         * ログメッセージ表示
+         */
+        function logMessage(message, type = 'info') {
+            const log = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${timestamp}] ${message}`;
+            
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+
+            console.log(`[TestRunner] ${message}`);
+        }
+
+        /**
+         * ユーティリティ関数
+         */
+        function getBrowserName() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Chrome') && !ua.includes('Edg')) return 'Chrome';
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Safari') && !ua.includes('Chrome')) return 'Safari';
+            if (ua.includes('Edg')) return 'Edge';
+            return 'Unknown';
+        }
+
+        function getBrowserVersion() {
+            const ua = navigator.userAgent;
+            let version = 'Unknown';
+            try {
+                if (ua.includes('Chrome')) {
+                    version = ua.match(/Chrome\/([0-9.]+)/)[1];
+                } else if (ua.includes('Firefox')) {
+                    version = ua.match(/Firefox\/([0-9.]+)/)[1];
+                } else if (ua.includes('Safari')) {
+                    version = ua.match(/Safari\/([0-9.]+)/)[1];
+                } else if (ua.includes('Edge')) {
+                    version = ua.match(/Edge\/([0-9.]+)/)[1];
+                }
+            } catch (e) {
+                // バージョン取得失敗時はそのまま
+            }
+            return version;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // ウィンドウリサイズ時の処理
+        window.addEventListener('resize', debounce(() => {
+            displayBrowserInfo();
+        }, 250));
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html>

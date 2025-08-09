@@ -1,0 +1,64 @@
+{
+  "projects": [
+    {
+      "id": "project-001",
+      "title": "E-commerce Site",
+      "category": "frontend",
+      "description": "レスポンシブ対応のオンラインショップサイト",
+      "thumbnail": "https://picsum.photos/400/250?random=1",
+      "demoUrl": "https://demo1.example.com",
+      "githubUrl": "https://github.com/username/project1",
+      "technologies": ["HTML", "CSS", "JavaScript", "Bootstrap"]
+    },
+    {
+      "id": "project-002", 
+      "title": "Task Management App",
+      "category": "fullstack",
+      "description": "Vue.jsで構築したタスク管理アプリケーション",
+      "thumbnail": "https://picsum.photos/400/250?random=2",
+      "demoUrl": "https://demo2.example.com",
+      "githubUrl": "https://github.com/username/project2",
+      "technologies": ["Vue.js", "Node.js", "MongoDB", "Express"]
+    },
+    {
+      "id": "project-003",
+      "title": "Weather Dashboard",
+      "category": "frontend", 
+      "description": "APIを活用した天気予報ダッシュボード",
+      "thumbnail": "https://picsum.photos/400/250?random=3",
+      "demoUrl": "https://demo3.example.com",
+      "githubUrl": "https://github.com/username/project3",
+      "technologies": ["React", "TypeScript", "API", "Chart.js"]
+    },
+    {
+      "id": "project-004",
+      "title": "Blog Platform",
+      "category": "fullstack",
+      "description": "Next.jsで開発したCMSブログサイト", 
+      "thumbnail": "https://picsum.photos/400/250?random=4",
+      "demoUrl": "https://demo4.example.com",
+      "githubUrl": "https://github.com/username/project4",
+      "technologies": ["Next.js", "React", "Prisma", "PostgreSQL"]
+    },
+    {
+      "id": "project-005",
+      "title": "Portfolio Site",
+      "category": "frontend",
+      "description": "HTML/CSS/JSで作成したポートフォリオサイト",
+      "thumbnail": "https://picsum.photos/400/250?random=5",
+      "demoUrl": "https://demo5.example.com", 
+      "githubUrl": "https://github.com/username/project5",
+      "technologies": ["HTML", "CSS", "JavaScript", "Responsive"]
+    },
+    {
+      "id": "project-006",
+      "title": "Chat Application",
+      "category": "fullstack",
+      "description": "Socket.ioを使ったリアルタイムチャット",
+      "thumbnail": "https://picsum.photos/400/250?random=6",
+      "demoUrl": "https://demo6.example.com",
+      "githubUrl": "https://github.com/username/project6",
+      "technologies": ["Node.js", "Socket.io", "React", "MongoDB"]
+    }
+  ]
+}

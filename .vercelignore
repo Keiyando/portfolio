@@ -1,0 +1,32 @@
+# Vercelでの不要ファイル
+docs/
+learning/
+tests/
+error-check-report.md
+implementation-log.md
+accessibility-audit-report.md
+CLAUDE.md
+portfolio-spec.md
+README.md
+
+# 開発用ファイル
+notification.sh
+*.log
+*.tmp
+
+# macOS
+.DS_Store
+
+# Node.js (使用しない場合)
+node_modules/
+package*.json
+
+# エディタ設定
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# バックアップファイル
+*.bak
+*~

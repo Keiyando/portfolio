@@ -1,0 +1,72 @@
+{
+  "categories": [
+    {
+      "id": "frontend",
+      "name": "フロントエンド",
+      "skills": [
+        {
+          "name": "HTML/CSS",
+          "icon": "html5",
+          "description": "セマンティックなWebサイト構築、アニメーションとトランジション、CSS Grid/Flexboxによる複雑なレイアウト設計"
+        },
+        {
+          "name": "JavaScript",
+          "icon": "js",
+          "description": "インタラクティブなWebアプリケーション開発、非同期処理とAPI連携、モダンなES6+記法での効率的な開発"
+        },
+        {
+          "name": "React/Vue",
+          "icon": "react",
+          "description": "コンポーネントベースのSPA構築、状態管理（Redux/Vuex）、パフォーマンス最適化"
+        },
+        {
+          "name": "レスポンシブデザイン",
+          "icon": "mobile",
+          "description": "全デバイス対応のUI/UX設計、モバイルファーストアプローチ、アクセシビリティを考慮した実装"
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "name": "バックエンド",
+      "skills": [
+        {
+          "name": "Node.js",
+          "icon": "nodejs",
+          "description": "RESTful API設計・開発、リアルタイム通信（WebSocket）、Express.jsを使った高性能なサーバー構築"
+        },
+        {
+          "name": "Python",
+          "icon": "python",
+          "description": "データ分析・機械学習の実装、Django/FastAPIを使ったWeb API開発、自動化スクリプトの作成"
+        },
+        {
+          "name": "データベース",
+          "icon": "database",
+          "description": "スケーラブルなデータベース設計、SQL最適化、NoSQL（MongoDB）とRDB（PostgreSQL/MySQL）の使い分け"
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "name": "ツール・その他",
+      "skills": [
+        {
+          "name": "Git",
+          "icon": "git",
+          "description": "チーム開発でのGitフロー管理、コードレビュープロセス、CI/CDパイプラインとの連携"
+        },
+        {
+          "name": "Docker",
+          "icon": "docker",
+          "description": "アプリケーションのコンテナ化、開発環境の統一、Dockerfileとdocker-composeを活用した環境構築"
+        },
+        {
+          "name": "AWS",
+          "icon": "aws",
+          "description": "クラウドインフラの設計・構築、EC2/S3/RDS等のサービス活用、自動デプロイメントの構築"
+        }
+      ]
+    }
+  ]
+}

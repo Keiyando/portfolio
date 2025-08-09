@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クロスブラウザテスト - 自動化チェック</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .test-container {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 24px;
+        }
+        
+        .test-section h2 {
+            color: #2563eb;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+        
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #6b7280;
+        }
+        
+        .test-item.pass {
+            border-left-color: #10b981;
+            background-color: #f0fdf4;
+        }
+        
+        .test-item.fail {
+            border-left-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        
+        .test-item.warning {
+            border-left-color: #f59e0b;
+            background-color: #fffbeb;
+        }
+        
+        .status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status.pass {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .status.fail {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .status.warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+        
+        .status.running {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .browser-info {
+            background-color: #e0f2fe;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .viewport-tests {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .viewport-test {
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .results-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .summary-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+        }
+        
+        .summary-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        #runTests {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        #runTests:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        #runTests:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 クロスブラウザテスト - 自動化チェック</h1>
+        
+        <div class="browser-info" id="browserInfo">
+            <strong>ブラウザ情報を取得中...</strong>
+        </div>
+        
+        <button id="runTests" onclick="runAllTests()">
+            🚀 全テストを実行
+        </button>
+        
+        <div class="test-section">
+            <h2>🌐 ブラウザ機能サポート</h2>
+            <div id="browserSupport">
+                <!-- テスト項目が動的に追加される -->
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📱 レスポンシブ・ビューポートテスト</h2>
+            <div class="viewport-tests" id="viewportTests">
+                <!-- ビューポートテストが動的に追加される -->
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>⚡ パフォーマンステスト</h2>
+            <div id="performanceTests">
+                <!-- パフォーマンステストが動的に追加される -->
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🛠️ JavaScript機能テスト</h2>
+            <div id="jsTests">
+                <!-- JavaScript機能テストが動的に追加される -->
+            </div>
+        </div>
+        
+        <div class="results-summary" id="resultsSummary">
+            <!-- 結果サマリーが動的に追加される -->
+        </div>
+    </div>
+
+    <script>
+        // テスト結果を保存する配列
+        let testResults = [];
+        
+        // ブラウザ情報を表示
+        function displayBrowserInfo() {
+            const info = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                viewport: {
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                },
+                screen: {
+                    width: screen.width,
+                    height: screen.height,
+                    colorDepth: screen.colorDepth
+                },
+                devicePixelRatio: window.devicePixelRatio || 1
+            };
+            
+            document.getElementById('browserInfo').innerHTML = `
+                <h3>📊 現在の環境情報</h3>
+                <p><strong>ブラウザ:</strong> ${getBrowserName()}</p>
+                <p><strong>OS:</strong> ${getOSName()}</p>
+                <p><strong>ビューポート:</strong> ${info.viewport.width} x ${info.viewport.height}</p>
+                <p><strong>スクリーン解像度:</strong> ${info.screen.width} x ${info.screen.height}</p>
+                <p><strong>デバイスピクセル比:</strong> ${info.devicePixelRatio}</p>
+                <p><strong>言語:</strong> ${info.language}</p>
+                <p><strong>Cookie有効:</strong> ${info.cookieEnabled ? '✅' : '❌'}</p>
+                <p><strong>オンライン:</strong> ${info.onLine ? '✅' : '❌'}</p>
+            `;
+        }
+        
+        // ブラウザ名を取得
+        function getBrowserName() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Chrome') && !ua.includes('Edg')) return 'Chrome';
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Safari') && !ua.includes('Chrome')) return 'Safari';
+            if (ua.includes('Edg')) return 'Edge';
+            return 'Unknown';
+        }
+        
+        // OS名を取得
+        function getOSName() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Windows')) return 'Windows';
+            if (ua.includes('Mac')) return 'macOS';
+            if (ua.includes('Linux')) return 'Linux';
+            if (ua.includes('Android')) return 'Android';
+            if (ua.includes('iOS')) return 'iOS';
+            return 'Unknown';
+        }
+        
+        // テスト項目を作成
+        function createTestItem(name, status = 'running') {
+            return `
+                <div class="test-item ${status}" id="${name.replace(/\s+/g, '_')}">
+                    <span>${name}</span>
+                    <span class="status ${status}">${getStatusText(status)}</span>
+                </div>
+            `;
+        }
+        
+        // ステータステキストを取得
+        function getStatusText(status) {
+            switch(status) {
+                case 'pass': return '✅ PASS';
+                case 'fail': return '❌ FAIL';
+                case 'warning': return '⚠️ WARNING';
+                case 'running': return '⏳ RUNNING';
+                default: return '⏳ PENDING';
+            }
+        }
+        
+        // ブラウザサポートテストを実行
+        function runBrowserSupportTests() {
+            const tests = [
+                { name: 'CSS Grid サポート', test: () => CSS.supports('display', 'grid') },
+                { name: 'Flexbox サポート', test: () => CSS.supports('display', 'flex') },
+                { name: 'CSS Variables サポート', test: () => CSS.supports('--custom-property', '1') },
+                { name: 'CSS Transforms サポート', test: () => CSS.supports('transform', 'scale(1)') },
+                { name: 'CSS Animations サポート', test: () => CSS.supports('animation-name', 'test') },
+                { name: 'WebP画像サポート', test: () => checkWebPSupport() },
+                { name: 'IntersectionObserver API', test: () => 'IntersectionObserver' in window },
+                { name: 'Fetch API', test: () => 'fetch' in window },
+                { name: 'LocalStorage', test: () => 'localStorage' in window },
+                { name: 'ServiceWorker', test: () => 'serviceWorker' in navigator }
+            ];
+            
+            const container = document.getElementById('browserSupport');
+            container.innerHTML = tests.map(test => createTestItem(test.name)).join('');
+            
+            tests.forEach((test, index) => {
+                setTimeout(() => {
+                    try {
+                        const result = test.test();
+                        const status = result ? 'pass' : 'fail';
+                        updateTestItem(test.name, status);
+                        testResults.push({ category: 'Browser Support', name: test.name, status });
+                    } catch (error) {
+                        updateTestItem(test.name, 'fail');
+                        testResults.push({ category: 'Browser Support', name: test.name, status: 'fail', error: error.message });
+                    }
+                }, index * 100);
+            });
+        }
+        
+        // WebPサポートチェック
+        function checkWebPSupport() {
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 1;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 1, 1);
+            return canvas.toDataURL('image/webp').indexOf('webp') !== -1;
+        }
+        
+        // ビューポートテストを実行
+        function runViewportTests() {
+            const viewports = [
+                { name: '320px (最小モバイル)', width: 320 },
+                { name: '375px (iPhone SE)', width: 375 },
+                { name: '768px (タブレット)', width: 768 },
+                { name: '1024px (小型デスクトップ)', width: 1024 },
+                { name: '1920px (フルHD)', width: 1920 }
+            ];
+            
+            const container = document.getElementById('viewportTests');
+            container.innerHTML = viewports.map(vp => `
+                <div class="viewport-test" id="viewport_${vp.width}">
+                    <h4>${vp.name}</h4>
+                    <p>テスト対象幅: ${vp.width}px</p>
+                    <div class="status running">⏳ 準備中</div>
+                </div>
+            `).join('');
+            
+            viewports.forEach((viewport, index) => {
+                setTimeout(() => {
+                    const currentWidth = window.innerWidth;
+                    const isOptimal = currentWidth >= viewport.width * 0.9 && currentWidth <= viewport.width * 1.1;
+                    const status = isOptimal ? 'pass' : currentWidth >= viewport.width ? 'warning' : 'fail';
+                    
+                    const element = document.getElementById(`viewport_${viewport.width}`);
+                    const statusElement = element.querySelector('.status');
+                    statusElement.className = `status ${status}`;
+                    statusElement.textContent = getStatusText(status);
+                    
+                    testResults.push({ 
+                        category: 'Viewport', 
+                        name: viewport.name, 
+                        status,
+                        details: `現在幅: ${currentWidth}px, 対象幅: ${viewport.width}px`
+                    });
+                }, index * 150);
+            });
+        }
+        
+        // パフォーマンステストを実行
+        function runPerformanceTests() {
+            const tests = [
+                { name: 'ページ読み込み時間', test: () => checkPageLoadTime() },
+                { name: 'DOM要素数', test: () => checkDOMSize() },
+                { name: 'リソース数', test: () => checkResourceCount() },
+                { name: 'JavaScript実行時間', test: () => checkJSPerformance() }
+            ];
+            
+            const container = document.getElementById('performanceTests');
+            container.innerHTML = tests.map(test => createTestItem(test.name)).join('');
+            
+            tests.forEach((test, index) => {
+                setTimeout(() => {
+                    try {
+                        const result = test.test();
+                        updateTestItem(test.name, result.status);
+                        testResults.push({ 
+                            category: 'Performance', 
+                            name: test.name, 
+                            status: result.status,
+                            details: result.details
+                        });
+                    } catch (error) {
+                        updateTestItem(test.name, 'fail');
+                        testResults.push({ 
+                            category: 'Performance', 
+                            name: test.name, 
+                            status: 'fail', 
+                            error: error.message 
+                        });
+                    }
+                }, index * 200);
+            });
+        }
+        
+        // ページ読み込み時間をチェック
+        function checkPageLoadTime() {
+            if (performance && performance.timing) {
+                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                const status = loadTime < 3000 ? 'pass' : loadTime < 5000 ? 'warning' : 'fail';
+                return { status, details: `読み込み時間: ${loadTime}ms` };
+            }
+            return { status: 'warning', details: 'Performance API利用不可' };
+        }
+        
+        // DOM要素数をチェック
+        function checkDOMSize() {
+            const elementCount = document.querySelectorAll('*').length;
+            const status = elementCount < 1000 ? 'pass' : elementCount < 2000 ? 'warning' : 'fail';
+            return { status, details: `DOM要素数: ${elementCount}` };
+        }
+        
+        // リソース数をチェック
+        function checkResourceCount() {
+            if (performance && performance.getEntriesByType) {
+                const resources = performance.getEntriesByType('resource');
+                const status = resources.length < 50 ? 'pass' : resources.length < 100 ? 'warning' : 'fail';
+                return { status, details: `リソース数: ${resources.length}` };
+            }
+            return { status: 'warning', details: 'Performance API利用不可' };
+        }
+        
+        // JavaScript実行時間をチェック
+        function checkJSPerformance() {
+            const start = performance.now();
+            // 簡単な処理を実行
+            for (let i = 0; i < 10000; i++) {
+                Math.random();
+            }
+            const end = performance.now();
+            const executionTime = end - start;
+            const status = executionTime < 10 ? 'pass' : executionTime < 50 ? 'warning' : 'fail';
+            return { status, details: `実行時間: ${executionTime.toFixed(2)}ms` };
+        }
+        
+        // JavaScript機能テストを実行
+        function runJavaScriptTests() {
+            const tests = [
+                { name: 'スムーズスクロール動作', test: () => testSmoothScroll() },
+                { name: 'DOM操作機能', test: () => testDOMManipulation() },
+                { name: 'イベントリスナー', test: () => testEventListeners() },
+                { name: 'AJAX/Fetch機能', test: () => testAjaxFunctionality() },
+                { name: 'ローカルストレージ', test: () => testLocalStorage() }
+            ];
+            
+            const container = document.getElementById('jsTests');
+            container.innerHTML = tests.map(test => createTestItem(test.name)).join('');
+            
+            tests.forEach((test, index) => {
+                setTimeout(() => {
+                    try {
+                        const result = test.test();
+                        updateTestItem(test.name, result ? 'pass' : 'fail');
+                        testResults.push({ category: 'JavaScript', name: test.name, status: result ? 'pass' : 'fail' });
+                    } catch (error) {
+                        updateTestItem(test.name, 'fail');
+                        testResults.push({ category: 'JavaScript', name: test.name, status: 'fail', error: error.message });
+                    }
+                }, index * 150);
+            });
+        }
+        
+        // JavaScript機能テスト関数群
+        function testSmoothScroll() {
+            return CSS.supports('scroll-behavior', 'smooth') || 'scrollTo' in window;
+        }
+        
+        function testDOMManipulation() {
+            try {
+                const testElement = document.createElement('div');
+                testElement.classList.add('test');
+                return testElement.classList.contains('test');
+            } catch {
+                return false;
+            }
+        }
+        
+        function testEventListeners() {
+            try {
+                const testElement = document.createElement('div');
+                let eventFired = false;
+                testElement.addEventListener('test', () => eventFired = true);
+                testElement.dispatchEvent(new Event('test'));
+                return eventFired;
+            } catch {
+                return false;
+            }
+        }
+        
+        function testAjaxFunctionality() {
+            return 'fetch' in window || 'XMLHttpRequest' in window;
+        }
+        
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'test');
+                const result = localStorage.getItem('test') === 'test';
+                localStorage.removeItem('test');
+                return result;
+            } catch {
+                return false;
+            }
+        }
+        
+        // テスト項目のステータスを更新
+        function updateTestItem(testName, status) {
+            const elementId = testName.replace(/\s+/g, '_');
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.className = `test-item ${status}`;
+                const statusElement = element.querySelector('.status');
+                statusElement.className = `status ${status}`;
+                statusElement.textContent = getStatusText(status);
+            }
+        }
+        
+        // 結果サマリーを表示
+        function displayResultsSummary() {
+            const categories = ['Browser Support', 'Viewport', 'Performance', 'JavaScript'];
+            const summary = categories.map(category => {
+                const categoryResults = testResults.filter(r => r.category === category);
+                const passCount = categoryResults.filter(r => r.status === 'pass').length;
+                const total = categoryResults.length;
+                return { category, passCount, total, percentage: total > 0 ? Math.round((passCount / total) * 100) : 0 };
+            });
+            
+            const container = document.getElementById('resultsSummary');
+            container.innerHTML = summary.map(s => `
+                <div class="summary-card">
+                    <h3>${s.percentage}%</h3>
+                    <p>${s.category}</p>
+                    <p>${s.passCount}/${s.total} 通過</p>
+                </div>
+            `).join('');
+        }
+        
+        // 全テストを実行
+        async function runAllTests() {
+            const button = document.getElementById('runTests');
+            button.disabled = true;
+            button.innerHTML = '🔄 テスト実行中...<span class="loading"></span>';
+            
+            testResults = [];
+            
+            // テストを順次実行
+            runBrowserSupportTests();
+            
+            setTimeout(() => {
+                runViewportTests();
+            }, 1000);
+            
+            setTimeout(() => {
+                runPerformanceTests();
+            }, 2000);
+            
+            setTimeout(() => {
+                runJavaScriptTests();
+            }, 3000);
+            
+            // 結果サマリーを表示
+            setTimeout(() => {
+                displayResultsSummary();
+                button.disabled = false;
+                button.innerHTML = '✅ テスト完了 - 再実行';
+            }, 5000);
+        }
+        
+        // ページ読み込み時に初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            displayBrowserInfo();
+        });
+    </script>
+</body>
+</html>

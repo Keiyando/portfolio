@@ -15,55 +15,55 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translate3d(0, 30px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translate3d(0, -30px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 0);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale3d(0.8, 0.8, 1);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale3d(1, 1, 1);
   }
 }
 
@@ -94,37 +94,64 @@
   }
 }
 
-/* アニメーションクラス */
+/* GPU加速のためのベースクラス */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* アニメーションクラス（GPU最適化） */
 .animate-fade-in {
   animation: fadeIn var(--transition-slow) ease-out;
+  will-change: opacity;
 }
 
 .animate-fade-in-up {
   animation: fadeInUp var(--transition-slow) ease-out;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .animate-fade-in-down {
   animation: fadeInDown var(--transition-slow) ease-out;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .animate-slide-in-left {
   animation: slideInLeft var(--transition-slow) ease-out;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .animate-slide-in-right {
   animation: slideInRight var(--transition-slow) ease-out;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .animate-scale-in {
   animation: scaleIn var(--transition-base) ease-out;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: opacity;
 }
 
 .animate-bounce {
   animation: bounce 1s infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* アニメーション完了後のクリーンアップ */
+.animation-finished {
+  will-change: auto;
 }
 
 /* 遅延クラス */
@@ -140,6 +167,116 @@
 
 .transition-colors {
   transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+/* レイアウトシフト防止 */
+.prevent-layout-shift {
+  contain: layout style paint;
+}
+
+/* 画像の固定アスペクト比（CLS防止） */
+.aspect-ratio-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-ratio-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.aspect-ratio-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+/* プレースホルダー用スケルトンアニメーション */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: -100% 50%;
+  }
+}
+
+/* スムーズスクロール最適化 */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  overflow-anchor: none;
+}
+
+/* レンダリング最適化のユーティリティクラス */
+.isolate {
+  isolation: isolate;
+}
+
+.composite-layer {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.hardware-accel {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* パフォーマンス重視のホバーエフェクト */
+.hover-lift {
+  transition: transform var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.hover-lift:hover {
+  transform: translate3d(0, -4px, 0);
+}
+
+.hover-scale {
+  transition: transform var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.hover-scale:hover {
+  transform: scale3d(1.05, 1.05, 1);
+}
+
+/* 非表示要素の最適化 */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus management */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  }
 }
 
 .transition-transform {
@@ -191,13 +328,118 @@
 .scroll-animate {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .scroll-animate.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* 各種スクロールアニメーションタイプ */
+.scroll-animate.fade-in {
+  transform: none;
+}
+
+.scroll-animate.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.scroll-animate.fade-in-left {
+  transform: translateX(-50px);
+}
+
+.scroll-animate.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate.fade-in-right {
+  transform: translateX(50px);
+}
+
+.scroll-animate.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate.zoom-in {
+  transform: scale(0.8) translateY(30px);
+}
+
+.scroll-animate.zoom-in.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.scroll-animate.rotate-in {
+  transform: rotate(-5deg) translateY(30px);
+}
+
+.scroll-animate.rotate-in.visible {
+  opacity: 1;
+  transform: rotate(0deg) translateY(0);
+}
+
+/* スクロール進捗バー */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--color-primary), 
+    var(--color-accent));
+  transform: scaleX(0);
+  transform-origin: 0%;
+  z-index: 9999;
+  transition: transform 0.1s ease-out;
+}
+
+.scroll-progress.no-animation {
+  transition: none;
+  transform: scaleX(1);
+}
+
+/* カウントアップアニメーション */
+.count-up {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+/* テキストアニメーション */
+.text-animate {
+  overflow: hidden;
+}
+
+.text-animate span {
+  display: inline-block;
+}
+
+/* パーティクル効果（装飾用） */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.particle {
+  position: absolute;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.1;
+}
+
+.particle:nth-child(1) { animation-delay: 0s; }
+.particle:nth-child(2) { animation-delay: 2s; }
+.particle:nth-child(3) { animation-delay: 4s; }
 
 /* パフォーマンス最適化 */
 .will-change-transform {
@@ -207,6 +449,38 @@
 .will-change-scroll {
   will-change: scroll-position;
 }
+
+/* スキルセクション専用アニメーション */
+@keyframes skillFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes skillIconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* スキルカード専用クラス */
+.skill-card.animate-in {
+  animation: skillFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.skill-icon.pulse-on-hover:hover {
+  animation: skillIconPulse 0.6s ease-in-out;
+}
+
 
 /* アクセシビリティ対応 */
 @media (prefers-reduced-motion: reduce) {
@@ -221,14 +495,35 @@
     animation: none;
   }
   
-  .scroll-animate {
-    opacity: 1;
-    transform: none;
+  .scroll-animate,
+  .scroll-animate.fade-in,
+  .scroll-animate.fade-in-left,
+  .scroll-animate.fade-in-right,
+  .scroll-animate.zoom-in,
+  .scroll-animate.rotate-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
   
   .transition-all,
   .transition-colors,
   .transition-transform {
     transition: none;
+  }
+  
+  .scroll-progress {
+    transition: none;
+  }
+  
+  .particle {
+    animation: none;
+    display: none;
+  }
+  
+  .text-animate span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-domain.com/sitemap.xml
+
+# Performance optimized crawling
+Crawl-delay: 1
+
+# Block access to non-essential files
+Disallow: /css/
+Disallow: /js/
+Disallow: /assets/docs/
+Disallow: /tests/
+Disallow: /sw.js
+Disallow: /*.json$
+
+# Allow important assets for social sharing
+Allow: /assets/images/
+Allow: /favicon.ico
+Allow: /manifest.json
